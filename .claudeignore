@@ -1,0 +1,51 @@
+# 构建/编译产物（Java + 前端）
+target/
+dist/
+build/
+out/
+*.class
+*.jar
+*.war
+*.iml
+
+# 依赖目录（最占 token 的元凶）
+node_modules/
+.pnpm-store/
+.maven/
+.gradle/
+gradle/
+
+# IDE/编辑器配置（无业务价值）
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# 版本控制文件（Claude 不需要读这些）
+.git/
+.github/
+.gitignore
+.gitattributes
+
+# 日志/临时文件（每次扫描都重复读）
+*.log
+logs/
+tmp/
+temp/
+*.tmp
+*.bak
+
+# 环境配置/密钥文件（避免泄露，也减少扫描）
+.env
+.env.*
+application-*.yml
+application-*.properties
+
+# 其他无关文件
+README.md
+CHANGELOG.md
+LICENSE
+docs/
+assets/

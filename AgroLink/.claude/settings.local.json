@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"D:\\\\OPENCLAW\\\\AgroLink-Frontend\")",
+      "Bash(cp -r \"D:\\\\OPENCLAW\\\\AgroLink\\\\frontend\"/* \"D:\\\\OPENCLAW\\\\AgroLink-Frontend\")",
+      "Bash(java *)"
+    ]
+  }
+}

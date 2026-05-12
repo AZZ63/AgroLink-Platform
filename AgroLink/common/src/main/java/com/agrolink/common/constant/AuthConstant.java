@@ -26,6 +26,7 @@ public interface AuthConstant {
             "/api/user/login",      // 用户登录
             "/api/user/register",   // 用户注册
             "/api/user/refresh",    // 刷新令牌
+            "/api/user/setup",      // 管理员初始化
             "/api/notify/stream"    // SSE 实时通知（通过 token 参数鉴权）
     );
 }

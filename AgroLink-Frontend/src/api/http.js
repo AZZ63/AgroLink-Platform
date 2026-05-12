@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { ElMessage } from 'element-plus'
 
 const http = axios.create({
   baseURL: '/api',
@@ -19,11 +20,12 @@ function addRefreshSubscriber(cb) {
 }
 
 function getToken() {
-  return localStorage.getItem('token') || sessionStorage.getItem('token') || ''
+  // 优先读 sessionStorage（当前会话），再读 localStorage（持久化）
+  return sessionStorage.getItem('token') || localStorage.getItem('token') || ''
 }
 
 function getRefreshToken() {
-  return localStorage.getItem('refreshToken') || sessionStorage.getItem('refreshToken') || ''
+  return sessionStorage.getItem('refreshToken') || localStorage.getItem('refreshToken') || ''
 }
 
 http.interceptors.request.use(config => {
@@ -48,6 +50,14 @@ http.interceptors.response.use(
   },
   async error => {
     const originalRequest = error.config
+
+    // 403 权限拒绝
+    if (error.response?.status === 403) {
+      const msg = error.response?.data?.message || '权限不足，请使用管理员账号登录'
+      ElMessage.error(msg)
+      return Promise.reject(new Error(msg))
+    }
+
     // 只处理 401 且尚未重试过的请求
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
@@ -155,6 +165,27 @@ export const notifyApi = {
   unread() { return http.get('/notify/unread') },
   markRead(id) { return http.put(`/notify/${id}/read`) },
   markAllRead() { return http.put('/notify/read-all') }
+}
+
+export const adminApi = {
+  // 用户管理
+  getUsers(page = 1, size = 10, keyword = '') { return http.get('/admin/users', { params: { page, size, keyword } }) },
+  updateRole(id, role) { return http.put(`/admin/users/${id}/role`, role, { headers: { 'Content-Type': 'text/plain' } }) },
+  updateStatus(id, status) { return http.put(`/admin/users/${id}/status`, { status }) },
+  deleteUser(id) { return http.delete(`/admin/users/${id}`) },
+  // 角色管理
+  getRoles() { return http.get('/admin/roles') },
+  createRole(data) { return http.post('/admin/roles', data) },
+  updateRoleInfo(id, data) { return http.put(`/admin/roles/${id}`, data) },
+  deleteRole(id) { return http.delete(`/admin/roles/${id}`) },
+  getPermissionTree(roleId) { return http.get('/admin/roles/permissions/tree', { params: { roleId } }) },
+  assignPermissions(roleId, permissionIds) { return http.put(`/admin/roles/${roleId}/permissions`, permissionIds) },
+  // 菜单管理
+  getMenus() { return http.get('/admin/menus') },
+  createMenu(data) { return http.post('/admin/menus', data) },
+  updateMenu(id, data) { return http.put(`/admin/menus/${id}`, data) },
+  deleteMenu(id) { return http.delete(`/admin/menus/${id}`) },
+  getCurrentMenus() { return http.get('/admin/current/menus') }
 }
 
 export const addressApi = {

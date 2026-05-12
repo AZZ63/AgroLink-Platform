@@ -28,6 +28,9 @@ public class User {
     /** 手机号 */
     private String phone;
 
+    /** 用户状态：1 启用，0 禁用（默认 1） */
+    private Integer status;
+
     /** 创建时间（自动填充） */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createdAt;

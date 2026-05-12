@@ -15,13 +15,19 @@ export const useUserStore = defineStore('user', () => {
   const isAdmin = computed(() => role.value === 'ADMIN')
 
   function saveToStorage() {
+    // 先清除所有旧 token，避免残留导致权限错误
+    localStorage.removeItem('token')
+    localStorage.removeItem('refreshToken')
+    localStorage.removeItem('user')
+    sessionStorage.removeItem('token')
+    sessionStorage.removeItem('refreshToken')
+    sessionStorage.removeItem('user')
     if (rememberMe.value) {
       localStorage.setItem('token', token.value)
       localStorage.setItem('refreshToken', refreshToken.value)
       localStorage.setItem('user', JSON.stringify(user.value))
       localStorage.setItem('rememberMe', 'true')
     } else {
-      // 不记住密码，存到 sessionStorage，关闭标签页即清除
       sessionStorage.setItem('token', token.value)
       sessionStorage.setItem('refreshToken', refreshToken.value)
       sessionStorage.setItem('user', JSON.stringify(user.value))

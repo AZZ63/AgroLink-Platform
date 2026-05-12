@@ -46,7 +46,7 @@ public class UserService {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new BusinessException(409, "用户名已存在");
         }
-        if (!request.getRole().equals("FARMER") && !request.getRole().equals("MERCHANT")) {
+        if (!request.getRole().equals("FARMER") && !request.getRole().equals("MERCHANT") && !request.getRole().equals("ADMIN")) {
             throw new BusinessException(400, "无效的用户角色");
         }
 

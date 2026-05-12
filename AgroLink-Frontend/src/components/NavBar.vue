@@ -11,7 +11,7 @@
         <button v-if="userStore.isLoggedIn" class="tech-nav-btn" @click="$router.push('/favorites')">收藏</button>
         <button v-if="userStore.isLoggedIn" class="tech-nav-btn cart-btn" @click="$router.push('/cart')">🛒</button>
         <button v-if="userStore.isLoggedIn" class="tech-nav-btn" @click="$router.push('/addresses')">地址</button>
-        <button v-if="userStore.isAdmin" class="tech-nav-btn admin-btn" @click="$router.push('/admin/dashboard')">管理后台</button>
+        <button v-if="userStore.isAdmin" class="tech-nav-btn admin-btn" @click="$router.push('/admin/users')">管理后台</button>
       </nav>
       <template v-if="userStore.isLoggedIn">
         <button class="notif-btn" @click="goNotifications" aria-label="通知">
@@ -84,13 +84,13 @@ onUnmounted(() => {
 
 function goHome() {
   if (!userStore.isLoggedIn) return router.push('/')
-  if (userStore.isAdmin) return router.push('/admin/dashboard')
+  if (userStore.isAdmin) return router.push('/admin/users')
   const path = userStore.isFarmer ? '/farmer/dashboard' : '/merchant/dashboard'
   router.push(path)
 }
 
 function goNotifications() {
-  if (userStore.isAdmin) return router.push('/admin/dashboard')
+  if (userStore.isAdmin) return router.push('/admin/users')
   const path = userStore.isFarmer ? '/farmer/dashboard' : '/merchant/dashboard'
   router.push(path)
 }

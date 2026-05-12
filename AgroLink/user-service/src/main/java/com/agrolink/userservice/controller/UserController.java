@@ -36,6 +36,19 @@ public class UserController {
     }
 
     /**
+     * 初始化管理员账号（仅首次调用有效）
+     * <p>
+     * 系统中尚无管理员时可用，用于快速创建工作台管理员账号。
+     */
+    @PostMapping("/setup/admin")
+    public Result<LoginResponse> setupAdmin(@Valid @RequestBody RegisterRequest request) {
+        if (!"ADMIN".equals(request.getRole())) {
+            throw new BusinessException(400, "角色必须为 ADMIN");
+        }
+        return Result.success(userService.register(request));
+    }
+
+    /**
      * 用户登录
      */
     @PostMapping("/login")

@@ -4,6 +4,7 @@
 *.jar
 *.war
 *.log
+**/META-INF/
 
 # Node
 node_modules/
@@ -28,3 +29,11 @@ Thumbs.db
 
 # Logs
 logs/
+
+# Claude
+.claude/
+**/.claude/
+
+# Vite cache
+.vite/
+**/.vite/
